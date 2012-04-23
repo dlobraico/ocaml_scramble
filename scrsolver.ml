@@ -61,19 +61,4 @@ module Scr_Solver = struct
         List.exists (fun word -> compare_subword subword word) (Hashtbl.find_all dict (String.sub subword 0 min_length))
       else
         false
-
-    let rec recurse board (x,y) =
-        let rec loop word (a, b) =
-            if is_valid_pos (a, b)
-            then 
-                let new_word = 
-                    word ^ String.make 1 (get_char board (a, b));
-                in
-                    loop new_word (a + 1, b + 1)
-            else
-                loop word (a - 1, b - 1)
-
-        in
-            loop "" (x, y)
-
 end
