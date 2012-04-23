@@ -48,16 +48,17 @@ module Scr_Solver = struct
         with
             Invalid_argument "String.sub" -> false
 
-   (*FIXME the below is currently broken for actual words *)
+  let compare_subword subword word = 
+    if (String.length subword < String.length word)
+    then 
+        (String.sub word 0 (String.length subword)) = subword
+    else
+      false
+
     let is_valid_subword dict subword =
       if String.length subword >= 2
       then
-        if is_valid_word dict subword
-        then
-          (* do something differently here *)
-          List.exists (fun a -> (String.sub a 0 (String.length subword)) = subword) (Hashtbl.find_all dict (String.sub subword 0 min_length))
-        else
-          List.exists (fun a -> (String.sub a 0 (String.length subword)) = subword) (Hashtbl.find_all dict (String.sub subword 0 min_length))
+        List.exists (fun word -> compare_subword subword word) (Hashtbl.find_all dict (String.sub subword 0 min_length))
       else
         false
 
